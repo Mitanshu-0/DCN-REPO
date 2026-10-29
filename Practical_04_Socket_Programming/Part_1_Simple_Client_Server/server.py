@@ -27,3 +27,26 @@ client.send("Thank you for connecting".encode())
 # Close connection
 client.close()
 server.close()
+
+
+
+
+
+import socket
+
+s = socket.socket()
+s.bind(("0.0.0.0", 12345))
+s.listen(1)
+
+c, addr = s.accept()
+
+with open("received.txt", "wb") as f:
+    while True:
+        data = c.recv(1024)
+        if not data:
+            break
+        f.write(data)
+
+print("File received successfully")
+c.close()
+s.close()
