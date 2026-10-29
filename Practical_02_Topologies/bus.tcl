@@ -1,6 +1,6 @@
 set ns [new Simulator]
 
-set nr [open bus.tr w]
+set nr [open a2.tr w]
 $ns trace-all $nr
 
 set nf [open a2.nam w]

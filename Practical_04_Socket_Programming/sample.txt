@@ -1,1 +1,0 @@
-Sample file for DCN Practical 4 file-transfer demo.
