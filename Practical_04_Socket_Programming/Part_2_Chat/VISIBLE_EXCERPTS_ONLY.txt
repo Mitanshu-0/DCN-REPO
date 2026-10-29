@@ -1,29 +1,41 @@
-The report contains screenshots of part 2, but does NOT contain the complete client.py and server.py source. The following lines are visible (other code is omitted in the original images):
+import socket
 
-server.py:
-import threading # Used to handle concurrent sending and receiving
-# Create a TCP socket using IPv4
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# Define the host IP address and port number for the server
-host = '10.173.227.151' # Server IP address
-port = 40674 # Server port number
-# Bind the server socket to the specified host and port
-server.bind((host, port))
-# Start listening for incoming client connections (queue size = 1)
-server.listen(1)
+s = socket.socket()
+s.bind(("0.0.0.0", 12345))
+s.listen(1)
 
-client.py:
-def receive_messages(sock):
-    ... # lines 7-9 were not visible in the screenshot
-        print(message) # Display received message
-    else:
-        break # If no message, connection closed
-    except:
-        break # Exit loop on any exception
+c, addr = s.accept()
+print("Connected:", addr)
 
-# Main function that connects to the server and handles sending messages
-def main():
-    host = '10.173.227.151' # IP address of the chat server
-    port = 40674 # Port number of the chat server
+while True:
+    msg = c.recv(1024).decode()
+    print("Client:", msg)
+    if msg == "bye":
+        break
 
-THIS IS A DOCUMENTATION EXCERPT, NOT RUNNABLE SOURCE CODE.
+    msg = input("Server: ")
+    c.sendall(msg.encode())
+    if msg == "bye":
+        break
+
+c.close()
+s.close()
+
+
+import socket
+
+s = socket.socket()
+s.connect(("127.0.0.1", 12345))
+
+while True:
+    msg = input("Client: ")
+    s.sendall(msg.encode())
+    if msg == "bye":
+        break
+
+    msg = s.recv(1024).decode()
+    print("Server:", msg)
+    if msg == "bye":
+        break
+
+s.close()
